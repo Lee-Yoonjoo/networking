@@ -32,12 +32,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List _data = [];
+  //make page and limit dynamic
+  int page = 1;
+  int limit = 20;
 
   _fetchData() {
-
-    //make page and limit dynamic
-    int page = 1;
-    int limit = 20;
     String url = 'https://picsum.photos/v2/list?page=$page&limit=$limit';
 
     http.get(Uri.parse(url)).then((response) {
@@ -53,11 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
           var photo = photos[i];
           Photo eachPhoto = Photo(photo["id"], photo["author"]);
 
-          String authorname = eachPhoto.author;
-          developer.log('$authorname', name :'check photo data http.get' );
+          developer.log('${eachPhoto.author}', name :'check photo data http.get' );
           setState(() {
             //Always on this method for update listview
             _data.add(eachPhoto);
+            //get a new data from another page
+            page++;
           });
         }
 
@@ -85,7 +85,17 @@ class _MyHomePageState extends State<MyHomePage> {
           itemBuilder: (BuildContext context, int index) {
             Photo photo = _data[index];
             return Container(
-              child: Text(photo.author),
+              child: Card(
+                child: Column(
+                    children:<Widget>[
+
+                      Text(photo.author),
+                      Image.network('https://picsum.photos/id/${photo.id}/300/300')
+                    ],
+
+                ),
+
+              ),
             );
           }),
     );
