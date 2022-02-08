@@ -55,6 +55,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
           String authorname = eachPhoto.author;
           developer.log('$authorname', name :'check photo data http.get' );
+          setState(() {
+            //Always on this method for update listview
+            _data.add(eachPhoto);
+          });
         }
 
       } else {
@@ -79,8 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ListView.builder(
           itemCount: _data.length,
           itemBuilder: (BuildContext context, int index) {
+            Photo photo = _data[index];
             return Container(
-              child: Center(child: Text("")),
+              child: Text(photo.author),
             );
           }),
     );
