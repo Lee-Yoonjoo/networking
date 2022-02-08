@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
         List photos = jsonDecode(jsonString);
         for (int i = 0; i<photos.length; i++){
           var photo = photos[i];
-          Photo eachPhoto = Photo(photo["id"], photo["author"]);
+          Photo eachPhoto = Photo(photo["id"], photo["author"],photo["width"],photo["height"],photo["url"],photo["download_url"]);
 
           developer.log('${eachPhoto.author}', name :'check photo data http.get' );
           setState(() {
@@ -153,7 +153,11 @@ class Photo {
   }*/
   String id;
   String author;
-  Photo(this.id, this.author);
+  int width;
+  int height;
+  String url;
+  String download_url;
+  Photo(this.id, this.author, this.width, this.height, this.url, this.download_url);
 }
 
 
@@ -169,33 +173,37 @@ class DetailScreen extends StatelessWidget {
           Navigator.pop(context);
         },
         child: Container(
-
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children:<Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                  child: Text(
 
-                    photo.author,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold,),
-                  ),
-                ),
                 //Only with Image it causes "A" RenderFlex overflowed by pixels"
                 Flexible(
+
                   child: Container(
-                    height: double.infinity,
-                    width: double.infinity,
+                    alignment: Alignment.center,
+                    height: 600,
+                   // width: double.infinity,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(
-                            'https://picsum.photos/id/${photo.id}/500/500',
+                            //'https://picsum.photos/id/${photo.id}/500/500',
+                            photo.download_url
                           ),
-                          fit: BoxFit.fitWidth,
+                          fit: BoxFit.scaleDown,
                         )),
                   ),
+                ),
+                Text(
+                  "Autor : ${photo.author}",
+                  style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold,),
+                ),
+                Text(
+
+                  // photo.width,
+                  "Size : ${photo.width}X${photo.height}",
+                  style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold,),
                 ),
               ],
           ),
