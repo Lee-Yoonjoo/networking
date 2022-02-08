@@ -80,24 +80,52 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.refresh))
         ],
       ),
-      body: ListView.builder(
+      body: GridView.builder(
+      //  shrinkWrap: true,
+       // physics: NeverScrollableScrollPhysics(),
           itemCount: _data.length,
           itemBuilder: (BuildContext context, int index) {
             Photo photo = _data[index];
             return Container(
+              margin: EdgeInsets.symmetric(vertical: 8.0),
+              height: 200.0,
               child: Card(
-                child: Column(
-                    children:<Widget>[
 
-                      Text(photo.author),
-                      Image.network('https://picsum.photos/id/${photo.id}/300/300')
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                    children:<Widget>[
+                Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  child: Text(
+
+                        photo.author,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold,),
+                      ),
+                ),
+                      //Only with Image it causes "A" RenderFlex overflowed by pixels"
+                      Flexible(
+                        child: Container(
+                          height: double.infinity,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  'https://picsum.photos/id/${photo.id}/200/200',
+                                ),
+                                fit: BoxFit.fitWidth,
+                              )),
+                        ),
+                      ),
                     ],
 
                 ),
 
               ),
             );
-          }),
+          }, gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      ),
     );
   }
 }
