@@ -86,24 +86,33 @@ class _MyHomePageState extends State<MyHomePage> {
           itemCount: _data.length,
           itemBuilder: (BuildContext context, int index) {
             Photo photo = _data[index];
-            return Container(
-              margin: EdgeInsets.symmetric(vertical: 8.0),
-              height: 200.0,
-              child: Card(
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailScreen(photo:_data[index]),
+                  ),
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 8.0),
+                height: 200.0,
+                child: Card(
 
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children:<Widget>[
-                Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                  child: Text(
+                      Padding(
+                        padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        child: Text(
 
-                        photo.author,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold,),
+                          photo.author,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold,),
+                        ),
                       ),
-                ),
                       //Only with Image it causes "A" RenderFlex overflowed by pixels"
                       Flexible(
                         child: Container(
@@ -120,8 +129,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
 
-                ),
+                  ),
 
+                ),
               ),
             );
           }, gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
@@ -144,4 +154,53 @@ class Photo {
   String id;
   String author;
   Photo(this.id, this.author);
+}
+
+
+class DetailScreen extends StatelessWidget {
+  final Photo photo;
+  const DetailScreen({Key? key, required this.photo}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Container(
+
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children:<Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  child: Text(
+
+                    photo.author,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold,),
+                  ),
+                ),
+                //Only with Image it causes "A" RenderFlex overflowed by pixels"
+                Flexible(
+                  child: Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            'https://picsum.photos/id/${photo.id}/500/500',
+                          ),
+                          fit: BoxFit.fitWidth,
+                        )),
+                  ),
+                ),
+              ],
+          ),
+        ),
+      ),
+    );
+  }
 }
