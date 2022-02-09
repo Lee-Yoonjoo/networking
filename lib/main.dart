@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:networking/screens/webview.dart';
 //JSON, UTF-8 .. data converter for dart
 import 'dart:convert';
 //logging library
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => DetailScreen(photo:_data[index]),
+                    builder: (context) => WebViewContainer(photo.url),
                   ),
                 );
               },
